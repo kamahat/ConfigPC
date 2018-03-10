@@ -101,9 +101,22 @@ https://mega.nz/linux/MEGAsync/xUbuntu_17.10/amd64/megasync-xUbuntu_17.10_amd64.
 
 ## == GIT
 sudo apt-get install git
+sudo apt-get install git-core git-gui git-doc
 GITUSERNAME="kamahat" && git config --global user.name $GITUSERNAME
 GITEMAIL="kamahat@hotmail.com" && git config --global user.email $GITEMAIL
 # creation du projet sur GIT ConfigPC
 git init ConfigPC && cd ConfigPC
-# ajout local
+git add install-17.10.s # ajout des ficheir au repository
+git commit -m "Ouverture du CVS" # on commit quand o na tous les fichiers
+# ajout du repository distant
 git remote add origin https://github.com/kamahat/ConfigPC.git
+# push fichier du local sur le gitid_rsa_git
+git push -u origin master 
+
+# GIT SSH
+# Creation d'un jeu de clef
+ssh-keygen -t rsa -C "kamahat@hotmail.com" -f /home/yoyo/.ssh/id_rsa_git
+# on export la clef publique dans GitHub
+# on ajoute la clef dans ubuntu 
+ssh-add id_rsa_git
+Enter passphrase for id_rsa_git:

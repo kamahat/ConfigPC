@@ -1,4 +1,9 @@
 #!/bin/bash
+##
+## GIT ecriture : 
+##		git commit -m "Fin"
+##		git push -u origin master
+##
 
 ## == nettoyage
 sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get autoremove

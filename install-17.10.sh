@@ -103,7 +103,7 @@ sudo snap install yakyak
 # pour supprimer si besoin : sudo snap remove yakyak
 ## == mega
 https://mega.nz/linux/MEGAsync/xUbuntu_17.10/amd64/megasync-xUbuntu_17.10_amd64.deb
-
+# ==============================================
 ## == GIT
 	sudo apt-get install git
 	sudo apt-get install git-core git-gui git-doc
@@ -111,7 +111,7 @@ https://mega.nz/linux/MEGAsync/xUbuntu_17.10/amd64/megasync-xUbuntu_17.10_amd64.
 	GITEMAIL=$GITUSERNAME"@h.com" && git config --global user.email $GITEMAIL
 	# creation du projet sur GIT ConfigPC
 	git init ConfigPC && cd ConfigPC
-	git add install-17.10.s # ajout des ficheir au repository
+	git add install-17.10.sh # ajout des ficheir au repository
 	git commit -m "Ouverture du CVS" # on commit quand o na tous les fichiers
 	# ajout du repository distant
 	git remote add origin https://github.com/kamahat/ConfigPC.git
@@ -135,3 +135,13 @@ https://mega.nz/linux/MEGAsync/xUbuntu_17.10/amd64/megasync-xUbuntu_17.10_amd64.
 	##
 	# On change l'URL du projet de Http à SSH
 	git remote set-url origin git@github.com:kamahat/ConfigPC.git
+# ==============================================
+## == Arduino
+# Telecharger le binaire sur : https://www.arduino.cc/en/Main/Software
+mkdir -p ~/Build/local/Arduino && cd ~/Build/local/Arduino
+tar -xvf ~/Téléchargements/arduino-1.8.5-linux64.tar.xz
+./install.sh 
+	Adding desktop shortcut, menu item and file associations for Arduino IDE... done!
+# Raccourcis "Arduino IDE" on doit le rendre exécutable en faisant clic droit → Propriété → Permission → cochez "autorisez l'exécution du fichier comme un programme"
+
+

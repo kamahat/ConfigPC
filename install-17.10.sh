@@ -97,6 +97,10 @@ sudo apt-get install freecad-daily freecad-daily-doc
 sudo add-apt-repository -y ppa:atareao/telegram && sudo apt-get update && sudo apt-get install -y telegram
 # a ajouter au demarrage
 
+## === JAva
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+apt-get install oracle-java9-installer oracle-java9-set-default
 ## == Hangout 
 # télécharger : https://www.google.com/tools/dlpage/hangoutplugin/download.html?platform=linux_ubuntu_x86_64
 sudo snap install yakyak
@@ -143,5 +147,37 @@ tar -xvf ~/Téléchargements/arduino-1.8.5-linux64.tar.xz
 ./install.sh 
 	Adding desktop shortcut, menu item and file associations for Arduino IDE... done!
 # Raccourcis "Arduino IDE" on doit le rendre exécutable en faisant clic droit → Propriété → Permission → cochez "autorisez l'exécution du fichier comme un programme"
+sudo chmod a+rw /dev/ttyUSB0
 
+## == cura
+sudo add-apt-repository ppa:thopiekar/cura && sudo apt-get update
+apt-get install cura
+# ==============================================
+## == Stellarium
+sudo add-apt-repository ppa:stellarium/stellarium-releases
+sudo apt-get install stellarium
+# ==============================================
+# == Media Manager
+# ================
+# === MEdiaelec : gestion bibliotech video
+# le repository n'a pas e version pour la 17.10
+sudo apt-get install qt5-default qtmultimedia5-dev qt5-qmake qtscript5-dev libmediainfo-dev qtdeclarative5-dev
 
+cd ~/Build/Git
+git clone https://github.com/Komet/MediaElch.git
+cd MediaElch && mkdir build && cd build
+qmake .. && make -j5
+# ================
+# === tinyMediaManager
+apt-get install openjdk-8-jdk
+apt-get install libmediainfo
+cd /path/to/tinyMediaManager
+ ./tinyMediaManager.sh
+ # Download  http://release.tinymediamanager.org/
+ wget http://release.tinymediamanager.org/dist/tmm_2.9.8_6644bb9_linux.tar.gz
+# ==============================================
+## === Clementine
+sudo add-apt-repository ppa:me-davidsansome/clementine
+sudo apt-get update -y && sudo apt-get install clementine
+## === gestion des tag audio
+sudo apt-get install easytag

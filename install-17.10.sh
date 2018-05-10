@@ -9,12 +9,15 @@
 sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get autoremove
 
 ## == debut
-sudo apt-get install vim terminator git htop curl aptitude
+sudo apt-get install vim terminator git htop curl aptitude screen openssh-server
 
 echo 'UUID=45e71c47-a88f-4493-8b1a-e5bfcf7562b0 /home/yoyo/eMule           reiserfs    defaults        0       2' >>/etc/fstab
 
 # == reseau
 sudo apt-get install wireshark zenmap sipcalc ethtool net-tools
+# NFS client
+apt install -y nfs-common
+# mount -t nfs filer.zalin.home:/volume2/Partage /media/yoyo/NFS
 
 # === geany
 	sudo apt-get install geany geany-plugin*
@@ -177,7 +180,34 @@ cd /path/to/tinyMediaManager
  wget http://release.tinymediamanager.org/dist/tmm_2.9.8_6644bb9_linux.tar.gz
 # ==============================================
 ## === Clementine
-sudo add-apt-repository ppa:me-davidsansome/clementine
-sudo apt-get update -y && sudo apt-get install clementine
+sudo apt-get install clementine
 ## === gestion des tag audio
 sudo apt-get install easytag
+## muzixbrainz
+$noop(Various Artist Albums)
+$if($eq(%compilation%,1),
+[$if2(%albumartist%,%artist%)]/%album%/
+$if($gt(%totaldiscs%,1),$if(%discsubtitle%,CD %discnumber%: %discsubtitle%/, CD %discnumber%/),)
+$num(%tracknumber%,2). %artist% - %title%,
+$noop(Single Artist Albums)
+$firstalphachar($if($eq($left($lower(%artist%),4),the ),
+$right($upper(%artist%),$sub($len(%artist%),4)),$upper(%artist%)))/
+$noop(Artist)
+$if2(%albumartist%,%artist%)/
+$if(%album%,%album%/
+$noop(Album Tracks)
+$if($gt(%totaldiscs%,1),$if(%discsubtitle%,CD %discnumber%: %discsubtitle%/, CD %discnumber%/),)
+$num(%tracknumber%,2). %title%,
+$noop(Non-Album Tracks)
+%title%
+)
+)
+# ==============================================
+## === Hashcat
+apt-get install opencl-headers
+
+# ============================
+## == geogebra 5.0 avec 3D
+sudo add-apt-repository "deb http://www.geogebra.net/linux/ stable main"
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C072A32983A736CF  &&   sudo apt-get update
+sudo apt-get install geogebra5 geogebra-classic geogebra-math-apps geogebra-math-calculators

@@ -93,6 +93,9 @@ sudo unzip -d /usr/lib/keepass2/Plugins DataBaseBackup-2.0.8.6.zip
 wget https://github.com/pfn/keepasshttp/raw/master/KeePassHttp.plgx
 sudo mv KeePassHttp.plgx /usr/lib/keepass2/Plugins
 sudo chmod 644 /usr/lib/keepass2/Plugins/KeePassHttp.plgx 
+## === Lecture Flash swf
+sed -i '/<mime-type type="application\/vnd.adobe.flash.movie">/s/vnd.adobe.flash.movie/x-shockwave-flash/' /usr/share/mime/packages/freedesktop.org.xml
+update-mime-database /usr/share/mime
 ## === freecad
 sudo add-apt-repository ppa:freecad-maintainers/freecad-daily && sudo apt-get update
 sudo apt-get install freecad-daily freecad-daily-doc  

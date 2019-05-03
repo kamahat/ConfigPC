@@ -8,16 +8,34 @@
 ## == nettoyage
 sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get autoremove
 
+## 18.10 bug
+
+sudo apt install gnome-system-monitor
 ## == debut
-sudo apt-get install vim terminator git htop curl aptitude screen openssh-server
+sudo apt-get install vim terminator git htop curl aptitude screen openssh-server gparted remmina
+sudo apt-get install keyutils
+apt install -y realmd sssd sssd-tools libnss-sss libpam-sss krb5-user adcli samba-common-bin ntp  
+
 
 echo 'UUID=45e71c47-a88f-4493-8b1a-e5bfcf7562b0 /home/yoyo/eMule           reiserfs    defaults        0       2' >>/etc/fstab
+# mkdir -p /media/yoyo/{Video,Musique,Partage}
+# echo '//filer.zalin.home/Video     /media/yoyo/Video     cifs     _netdev,credentials=/home/yoyo/.smbcredentials,iocharset=utf8,vers=3.0,gid=1000,uid=1000,rw,guest    0     0' >>/etc/fstab
 
+cat <<EOF>/home/yoyo/.smbcredentials
+username=yoyo
+password=MonMotDePasse
+domain=zalin.home
+EOF
+chmod 600 /home/yoyo/.smbcredentials
 # == reseau
 sudo apt-get install wireshark zenmap sipcalc ethtool net-tools
 # NFS client
 apt install -y nfs-common
 # mount -t nfs filer.zalin.home:/volume2/Partage /media/yoyo/NFS
+sudo snap refresh
+
+# CIFS
+sudo apt-get install smbclient cifs-utils
 
 # === geany
 	sudo apt-get install geany geany-plugin*
@@ -33,6 +51,10 @@ sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stabl
  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
  sudo apt-get update
  sudo apt-get install google-chrome-stable
+ 
+# === QDirStat
+sudo add-apt-repository ppa:nathan-renniewaldock/qdirstat
+sudo apt install qdirstat
 
 ## === virtualbox
 	sudo apt-get -y install gcc make linux-headers-$(uname -r) dkms
@@ -45,6 +67,7 @@ sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stabl
 	VBoxManage -v
 	# extension pack 
 	curl -O http://download.virtualbox.org/virtualbox/5.2.0/Oracle_VM_VirtualBox_Extension_Pack-5.2.0-120293.vbox-extpack
+	http://download.virtualbox.org/virtualbox/5.2.12/Oracle_VM_VirtualBox_Extension_Pack-5.2.12-122591.vbox-extpack
 	sudo VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-5.2.0-120293.vbox-extpack
 	# verif extension 
 	VBoxManage list extpacks
@@ -54,18 +77,24 @@ sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stabl
 	sudo add-apt-repository ppa:graphics-drivers/ppa 
 	sudo apt-get update 
 	ubuntu-drivers devices  
+	# optinel pour tester la carte
+			sudo apt-get install phoronix-test-suite
+			 sudo phoronix-test-suite default-benchmark openarena xonotic tesseract gputest unigine-valley
+			 
 	#choisir la version, actuellement = 390
-	sudo apt-get install nvidia-(numéro du pilote) 
-
-##=== Gnome EncFS Manager 
-	 sudo apt-get install encfs 
-	 mkdir -p ~/Encfs/Prive
-	 sudo add-apt-repository ppa:gencfsm/ppa && sudo apt-get update
-	 sudo apt-get install gnome-shell-extension-appindicator gnome-encfs-manager 
-	 gnome-encfs-manager set_pref force_traysystem="appindicator" && gnome-encfs-manager --replace
+	sudo apt-get install nvidia-driver-(numéro du pilote) 
+	### === cuda
+	sudo apt-get install linux-headers-$(uname -r)
+	sudo apt -y install nvidia-cuda-toolkit
+	nvcc -V 
 	 
  ##=== Megasync
  https://mega.co.nz/#sync!linux
+ 
+ ##=== LibreOffice
+ snap remove LibreOffice
+ sudo add-apt-repository ppa:libreoffice/ppa
+ sudo apt-get install libreoffice libreoffice-nlpsolver libreoffice-help-fr libreoffice-l10n-fr
  
  ## === video player : MVP
 	sudo add-apt-repository ppa:mc3man/mpv-tests
@@ -74,7 +103,8 @@ sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stabl
 
 ## === video player : vlc
 sudo apt-get install -y vlc
- 
+## === Edition graphic
+sudo apt-get install pinta
 ## === dropbox
 	https://www.dropbox.com/install-linux
 	sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
@@ -84,7 +114,7 @@ sudo apt-get install -y vlc
 sudo apt-get install -y mono-complete 
 sudo apt-get install -y keepass2 keepass2-doc mono-dmcs xdotool
 # ajuste la version
- https://sourceforge.net/projects/keepass/files/Translations%202.x/2.36/KeePass-2.36-French-f.zip/download
+ https://sourceforge.net/projects/keepass/files/Translations%202.x/2.38/KeePass-2.36-French-f.zip/download
 sudo unzip -d ~/.config/KeePass/ KeePass-2.36-French-f.zip
 # plugin
 https://keepass.info/extensions/v2/databasebackup/DataBaseBackup-2.0.8.6.zip
@@ -93,6 +123,14 @@ sudo unzip -d /usr/lib/keepass2/Plugins DataBaseBackup-2.0.8.6.zip
 wget https://github.com/pfn/keepasshttp/raw/master/KeePassHttp.plgx
 sudo mv KeePassHttp.plgx /usr/lib/keepass2/Plugins
 sudo chmod 644 /usr/lib/keepass2/Plugins/KeePassHttp.plgx 
+##=== Gnome EncFS Manager 
+	 sudo apt-get install encfs 
+	 mkdir -p ~/Encfs/Prive
+	 sudo add-apt-repository ppa:gencfsm/ppa && sudo apt-get update
+	 sudo apt-get install gnome-shell-extension-appindicator gnome-encfs-manager 
+	 gnome-encfs-manager set_pref force_traysystem="appindicator" && gnome-encfs-manager --replace
+	 
+	 
 ## === Lecture Flash swf
 sed -i '/<mime-type type="application\/vnd.adobe.flash.movie">/s/vnd.adobe.flash.movie/x-shockwave-flash/' /usr/share/mime/packages/freedesktop.org.xml
 update-mime-database /usr/share/mime
@@ -100,17 +138,15 @@ update-mime-database /usr/share/mime
 sudo add-apt-repository ppa:freecad-maintainers/freecad-daily && sudo apt-get update
 sudo apt-get install freecad-daily freecad-daily-doc  
 ## === Telegram
-sudo add-apt-repository -y ppa:atareao/telegram && sudo apt-get update && sudo apt-get install -y telegram
+sudo apt-get install -y telegram-desktop
+#sudo add-apt-repository -y ppa:atareao/telegram && sudo apt-get update && sudo apt-get install -y telegram
 # a ajouter au demarrage
 
 ## === JAva
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
-apt-get install oracle-java9-installer oracle-java9-set-default
-## == Hangout 
-# télécharger : https://www.google.com/tools/dlpage/hangoutplugin/download.html?platform=linux_ubuntu_x86_64
-sudo snap install yakyak
-# pour supprimer si besoin : sudo snap remove yakyak
+sudo apt-get install oracle-java9-installer oracle-java9-set-default
+
 ## == mega
 https://mega.nz/linux/MEGAsync/xUbuntu_17.10/amd64/megasync-xUbuntu_17.10_amd64.deb
 # ==============================================
@@ -156,7 +192,11 @@ tar -xvf ~/Téléchargements/arduino-1.8.5-linux64.tar.xz
 sudo chmod a+rw /dev/ttyUSB0
 
 ## == cura
-sudo add-apt-repository ppa:thopiekar/cura && sudo apt-get update
+#stable (3.4)
+#sudo add-apt-repository ppa:thopiekar/cura && sudo apt-get update
+# edge (3.5)
+sudo add-apt-repository ppa:thopiekar/cura-master && sudo apt-get update
+        
 apt-get install cura
 # ==============================================
 ## == Stellarium
@@ -167,12 +207,17 @@ sudo apt-get install stellarium
 # ================
 # === MEdiaelec : gestion bibliotech video
 # le repository n'a pas e version pour la 17.10
-sudo apt-get install qt5-default qtmultimedia5-dev qt5-qmake qtscript5-dev libmediainfo-dev qtdeclarative5-dev
+##sudo apt-get install qt5-default qtmultimedia5-dev qt5-qmake qtscript5-dev libmediainfo-dev qtdeclarative5-dev
+#cd ~/Build/Git
+#git clone https://github.com/Komet/MediaElch.git
+#cd MediaElch && mkdir build && cd build
+#qmake .. && make -j5
 
-cd ~/Build/Git
-git clone https://github.com/Komet/MediaElch.git
-cd MediaElch && mkdir build && cd build
-qmake .. && make -j5
+# autre optin : app image
+cd ~/Build/Git/MediaElch
+wget https://bintray.com/komet/MediaElch/download_file?file_path=MediaElch_linux_2.6.0_2019-01-06_08-54_git-master-d11d788.AppImage
+
+
 # ================
 # === tinyMediaManager
 apt-get install openjdk-8-jdk
@@ -182,6 +227,7 @@ cd /path/to/tinyMediaManager
  # Download  http://release.tinymediamanager.org/
  wget http://release.tinymediamanager.org/dist/tmm_2.9.8_6644bb9_linux.tar.gz
 # ==============================================
+
 ## === Clementine
 sudo apt-get install clementine
 ## === gestion des tag audio
@@ -214,3 +260,111 @@ apt-get install opencl-headers
 sudo add-apt-repository "deb http://www.geogebra.net/linux/ stable main"
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C072A32983A736CF  &&   sudo apt-get update
 sudo apt-get install geogebra5 geogebra-classic geogebra-math-apps geogebra-math-calculators
+
+# ============================
+## == slic3r
+
+# solution simple : le packages
+aptitude versions slic3r
+sudo apt-get install slic3r
+
+# à partir des sources
+sudo apt-get install build-essential libgtk2.0-dev libwxgtk3.0-dev libwx-perl libmodule-build-perl git cpanminus libextutils-cppguess-perl libboost-all-dev libxmu-dev liblocal-lib-perl wx-common libopengl-perl libwx-glcanvas-perl libtbb-dev libxmu-dev freeglut3-dev libwxgtk-media3.0-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev
+cd ~/Build/Git
+git clone https://github.com/alexrj/Slic3r.git
+cd Slic3r
+git checkout -b origin/master 
+
+export LDLOADLIBS=-lstdc++
+# pour intel : -msse4.2
+# export GCCOPT='-O3 -j4 -pipe -msse4a'
+#perl Build.PL //OPTIMIZE="-O3 -j4" 
+perl Build.PL 
+perl Build.PL --gui
+cat <<EOF>slic3r
+#!/bin/sh
+perl ./slic3r.pl $*
+EOF
+chmod +x slic3r
+
+
+#Exec=bash -c 'cd /opt/Slic3r && /opt/Slic3r/Slic3r --gui %F'
+cat<<EOF>/usr/share/applications/slic3r_master.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Slic3r
+Icon=//home/yoyo/Build/Git/Slic3r/var/Slic3r.png
+Exec=bash -c 'cd /home/yoyo/Build/Git/Slic3r && ./Slic3r %F'
+
+Keywords=perl;slice;3D;printer;convert;gcode;stl;obj;amf;
+StartupNotify=false
+StartupWMClass=slic3r
+MimeType=application/sla;model/x-wavefront-obj;model/x-geomview-off;application/x-amf;
+Categories=Development;Engineering;
+EOF
+
+# update
+rm slic3r
+git pull
+
+# ============================
+## == integration AD
+apt -y install realmd sssd sssd-tools libnss-sss libpam-sss adcli samba-common-bin oddjob oddjob-mkhomedir packagekit
+
+cat <<EOF>/etc/realmd.conf
+[users]
+ default-home = /home/%D/%U
+ default-shell = /bin/bash
+ 
+[active-directory]
+ default-client = sssd
+ os-name = Ubuntu Workstation
+ os-version = 18.04
+ 
+[service]
+ automatic-install = no
+ 
+[zalin.home]
+ fully-qualified-names = yes
+ automatic-id-mapping = no
+ user-principal = yes
+ manage-system = yes
+EOF
+
+realm discover ZALIN.HOME
+realm join ZALIN.HOME --user Administrateur --computer-ou=OU=Computers
+echo "use_fully_qualified_names = False" >> /etc/sssd/sssd.conf
+systemctl restart sssd
+
+# ====================
+# AutoFS
+cat<<EOF>> /home/yoyo/.smbcredentials
+username=yoyo
+password=ondine69
+domain=zalin.home
+EOF
+chmod 400 /home/yoyo/.smbcredentials
+
+
+sudo apt-get install autofs
+mkdir -p /media/SMB
+
+echo '/media/SMB /etc/auto.smb.top --ghost' >> /etc/auto.master
+cat <<EOF>>/etc/auto.smb.top
+* -fstype=autofs,-Dhost=& file:/etc/auto.smb.sub
+EOF
+
+cat <<EOF>/etc/auto.smb.sub
+Video -fstype=cifs,credentials=/home/yoyo/.smbcredentials,uid=1000,gid=1000,vers=2.1 ://filer.zalin.home/Video
+Partage -fstype=cifs,credentials=/home/yoyo/.smbcredentials,uid=1000,gid=1000,vers=2.1 ://filer.zalin.home/Partage
+Musique -fstype=cifs,credentials=/home/yoyo/.smbcredentials,uid=1000,gid=1000,vers=2.1 ://filer.zalin.home/Musique
+EOF
+# on peut rempacler les uid par uid=${UID},gid=${EUID}
+
+chmod 644 /etc/auto.smb.*
+sudo service autofs restart
+# ====================
+# openscad
+sudo add-apt-repository ppa:openscad/releases
+sudo apt-get install openscad

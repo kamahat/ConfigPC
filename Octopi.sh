@@ -4,6 +4,11 @@
 # ==============================================
 ## == Install Octopi
 
+sudo apt-get install ntp
+# par diffusion broadcast en ecoute
+sed -i '/^#disable auth/s/^#//' /etc/ntp.conf
+sed -i '/^#broadcastclient/s/^#//' /etc/ntp.conf
+sudo service ntp restart
 
 ## == SSH
 mkdir -p /home/pi/.ssh
@@ -70,6 +75,12 @@ wpa_cli -i wlan0 reconfigure
 # upgrade pipi installer
 sudo pip install --upgrade pip
 
+# webcam
+echo 'camera_usb_options="-r 1280x720 -f 30"' >> /boot/octopi.txt
+# octoprint acces camera
+#sed -i '/#camera_http_/s/^#//' /boot/octopi.txt
+#sed -i '/#camera_http_/s/-octopi//' /boot/octopi.txt
+#sed -i '/#camera_http_/s/-n//' /boot/octopi.txt
 ####################################
 # Anet A8 update : Skynet3d 
 # basé sur Marlin + auto-leveling 
